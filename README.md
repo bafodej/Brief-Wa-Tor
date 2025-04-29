@@ -1,2 +1,2 @@
-# Brief-Wa-Tor-goupe-4
+# Brief-Wa-Tor-goupe4
 Projet de groupe formation développeur IA 
