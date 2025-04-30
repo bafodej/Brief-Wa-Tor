@@ -1,4 +1,3 @@
-import utils.config
 from utils.config import shark_reproduction_time
 
 class Shark(Fish):
