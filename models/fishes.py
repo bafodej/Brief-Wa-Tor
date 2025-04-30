@@ -1,4 +1,6 @@
-from utils.config import REPRODUCTION_TIME_FISH
+from utils.config import *
+from models.sharks import *
+from ocean.ocean import *
 
 class Fish:
     def __init__(self, x, y, age=0):
