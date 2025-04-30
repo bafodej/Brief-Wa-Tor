@@ -1,5 +1,6 @@
- 
-from models.sharks import Shark
+from models.fishes import *
+from ocean.ocean import *
+from models.sharks import *
 
 def shark_reproduction_time(self, old_position, grille):
     if self.age >= self.shark_reproduction_time:

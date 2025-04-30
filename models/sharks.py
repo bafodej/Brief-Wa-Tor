@@ -1,4 +1,6 @@
-from utils.config import shark_reproduction_time
+from utils.config import *
+from models.fishes import *
+from ocean.ocean import *
 
 class Shark(Fish):
     def __init__(self, shark_energy, shark_starvation_time, shark_reproduction_time):
@@ -9,8 +11,7 @@ class Shark(Fish):
         self.age = 0  # utile pour reproduction
 
 
-
-def move_shark(self, position, grille):
+def move_shark(self, position, ocean):
     self.age += 1
     self.shark_energy -= 1
     self.shark_reproduction_time += 1

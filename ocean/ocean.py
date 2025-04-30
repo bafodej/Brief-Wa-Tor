@@ -1,4 +1,7 @@
 import random
+from utils.config import *
+from models.fishes import *
+from models.sharks import *
 
 # Définition des dimensions de la grille 
 width = 50
