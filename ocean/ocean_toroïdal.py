@@ -217,4 +217,3 @@ if __name__ == "__main__":
 # La simulation est conçue pour être visuellement attrayante et informative, avec des emojis représentant les entités.
 # Les poissons sont représentés par l'emoji 🐟 et les requins par l'emoji 🦈.
 # La grille est torique, ce qui signifie que les entités peuvent se déplacer d'un bord à l'autre.
-# La simulation est interactive, permettant à l'utilisateur de mettre en pause et de reprendre la simulation à tout moment.
