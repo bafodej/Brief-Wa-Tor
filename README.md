@@ -1,10 +1,10 @@
 # 🌊 Simulation Wa-Tor 🐟🦈 (Tkinter)
 
-Simulation inspirée du monde de **Wa-Tor**, une planète peuplée de **poissons** et de **requins** évoluant dans un **océan torique**. Cette version utilise **Python avec Tkinter** pour l'affichage graphique.
+Simulation inspirée du monde de **Wa-Tor**, une planète peuplée de **sardines** et de **requins** évoluant dans un **océan torique**. Cette version utilise **Python avec Tkinter** pour l'affichage graphique.
 
 ## 📦 Contenu
 
-- Simulation d'un écosystème poisson-requin
+- Simulation d'un écosystème sardine-requin
 - Affichage animé avec émojis (🐟 et 🦈)
 - Grille torique (rebords connectés)
 - Bouton Play/Pause
@@ -53,15 +53,12 @@ Ces paramètres peuvent être modifiés directement dans le fichier source (`sim
 
 | Nom                   | Rôle                             | Contributions principales                                                |
 |-----------------------|----------------------------------|-----------------------------------------------------------|
-| Amina ABDEDDAÏM       | Développeuse principale          | Implémentation de la logique de simulation (Fish, Shark)|
+| Amina ABDEDDAÏM       | Définition de la grille          | Implémentation de la logique de simulation (Fish, Shark)|
 | Amina ABDEDDAÏM       | Interface utilisateur            | Développement de l’interface Tkinter (affichage, bouton)      |
-| Sophie Martin          | Tests et validation              | Tests du comportement, réglages des paramètres  |
-| Karim Ouali            | Documentation & README           | Rédaction de la documentation, explication du modèle    |
+| Sophie Martin          | Tests et validation             | Tests du comportement, réglages des paramètres  |
+| Karim Ouali            | Documentation & README          | Rédaction de la documentation, explication du modèle    |
 
 ---
 
-## 📄 Licence
-
-Projet réalisé à des fins pédagogiques. Vous êtes libre de le modifier et de l’utiliser à titre personnel ou éducatif.
 
 

@@ -1,7 +1,7 @@
 
 import tkinter as tk
 import random
-from typing import Optional, List, Tuple, Union
+from typing import Optional, List, Tuple, Union  # Définition des types de valeur pour la simulation, Optinal (str) pour les entités vides, List [int] pour les listes, Tuple [str,int] pour les coordonnées x et y, Union [int,str] pour les entités (poisson ou requin). 
 
 # --- Paramètres de la simulation ---
 width = 25                     # Nombre de colonnes dans la grille
@@ -63,10 +63,11 @@ def get_neighbors(x: int, y: int) -> List[Tuple[int, int]]:
     random.shuffle(neighbors)
     return neighbors
 
+# --- Mise à jour de l'océan ---
 def update_ocean() -> None:
     """
     Met à jour la grille :
-    - Les poissons se déplacent et se reproduisent s’ils ont l’âge requis.
+    - Les sardines se déplacent et se reproduisent s’ils ont l’âge requis.
     - Les requins mangent les poissons, se déplacent, se reproduisent, ou meurent s’ils n’ont plus d’énergie.
     """
     global Ocean
@@ -138,12 +139,13 @@ class WaTorApp:
         self.canvas = tk.Canvas(master, width=width * cell_size, height=height * cell_size, bg="#a3dfff")
         self.canvas.pack()
         
+        ""      
         # Affichage du compteur de chronons
         self.counter_label = tk.Label(master, text="Chronon: 0", font=("Arial", 14))
         self.counter_label.pack()
         
         # Graphique du nombre de poissons et requins
-        self.stats_label = tk.Label(master, text="Poissons: 0 | Requins: 0", font=("Arial", 14))
+        self.stats_label = tk.Label(master, text="Sardines: 0 | Requins: 0", font=("Arial", 14))
         self.stats_label.pack()
 
         # Bouton Play/Pause
@@ -210,10 +212,5 @@ def main() -> None:
 # --- Lancement de l’application ---
 if __name__ == "__main__":
     main()
-# Le code ci-dessus est une simulation de l'écosystème Wa-Tor, où des poissons et des requins interagissent dans un océan torique.
-# La simulation est animée à l'aide de Tkinter, avec des boutons pour contrôler la lecture et la pause.
-# Les poissons se reproduisent et les requins mangent les poissons, avec des règles de reproduction et de survie.
-# La grille est mise à jour à chaque étape de la simulation, et les statistiques sont affichées en temps réel.
-# La simulation est conçue pour être visuellement attrayante et informative, avec des emojis représentant les entités.
-# Les poissons sont représentés par l'emoji 🐟 et les requins par l'emoji 🦈.
-# La grille est torique, ce qui signifie que les entités peuvent se déplacer d'un bord à l'autre.
+    
+# --- Fin du code ---
