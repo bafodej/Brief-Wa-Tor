@@ -1,8 +1,6 @@
-# /Users/mac/Desktop/Python/Brief-Wa-Tor/models/fishes.py
-
 # Constants (déplacées depuis config.py)
 CRONON = 12
-REPRODUCTION_TIME_FISH = CRONON * 2
+FISH_REPRODUCTION_TIME = CRONON * 2
 
 class Fish:
     def __init__(self, x=0, y=0, age=0):
@@ -18,7 +16,7 @@ class Fish:
     
     def can_reproduced(self):
         """Vérifie si le poisson peut se reproduire"""
-        return self.fish_reproduction_time >= REPRODUCTION_TIME_FISH
+        return self.fish_reproduction_time >= FISH_REPRODUCTION_TIME
     
     def to_reproduced(self):
         self.fish_reproduction_time = 0
