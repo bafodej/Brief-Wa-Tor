@@ -1,9 +1,9 @@
+import time 
 from ocean.ocean import Ocean
-import time
 
 def main():
     # Créer l'océan et initialiser la simulation
-    ocean = Ocean()
+    ocean = Ocean()  # La initialisation se fait dans le constructeur
     
     # Nombre d'étapes de simulation
     steps = 100
@@ -41,7 +41,6 @@ def main():
     print("\nStatistiques finales:")
     print(f"Sardines: {sardine_stats[-1]}")
     print(f"Requins: {shark_stats[-1]}")
-    
 
 if __name__ == "__main__":
     main()
