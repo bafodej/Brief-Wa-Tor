@@ -17,9 +17,9 @@ class WaTorApp:
         self.root.resizable(True, True)
         
         # Variables de configuration
-        self.canvas_width = 600
-        self.canvas_height = 600
-        self.cell_size = min(self.canvas_width // GRID_WIDTH, self.canvas_height // GRID_HEIGHT)
+        self.canvas_width = 25
+        self.canvas_height = 15
+        self.cell_size = 30
         
         # Couleurs
         self.water_color = "#0077be"  # Bleu océan
