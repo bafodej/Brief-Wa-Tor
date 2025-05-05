@@ -1,5 +1,5 @@
-from ocean import Ocean, initialize_ocean, width, height, cell_size, Fish, Shark
-import tkinter as tk 
+import tkinter as tk
+from Ocean.ocean import initialize_ocean, update_ocean, toroidal, get_neighbors, width, height, cell_size, Fish, Shark, Ocean
 
 # --- Interface graphique Tkinter ---
 class WaTorApp:

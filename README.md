@@ -29,7 +29,7 @@ Simulation inspirée du monde de **Wa-Tor**, une planète peuplée de **sardines
 3. **Interface** :
    - Une fenêtre s’ouvre avec une mer bleue.
    - Cliquez sur **Play** pour démarrer la simulation, et **Pause** pour l'arrêter.
-   - Les poissons (🐟) se déplacent et se reproduisent.
+   - Les sardines (🐟) se déplacent et se reproduisent.
    - Les requins (🦈) chassent, se reproduisent ou meurent de faim.
 
 ---
@@ -37,15 +37,15 @@ Simulation inspirée du monde de **Wa-Tor**, une planète peuplée de **sardines
 ## ⚙️ Paramètres de la simulation
 
 | Paramètre                    | Valeur par défaut | Description                                                                 |
-|-----------------------------|-------------------|-----------------------------------------------------------------------------|
-| `width`                     | 25                | Largeur de la grille                                                       |
-| `height`                    | 15                | Hauteur de la grille                                                       |
-| `cell_size`                 | 30                | Taille d’affichage des cellules (en pixels)                               |
-| `fish_reproduction_time`    | 9                 | Nombre de chronons avant reproduction d’un poisson                        |
-| `shark_reproduction_time`   | 3                 | Nombre de chronons avant reproduction d’un requin                         |
-| `shark_energy`              | 7                 | Énergie initiale d’un requin ; diminue chaque chronon, remonte en mangeant |
+|-----------------------------|-------------------|----------------------------------------------------------------------------|
+| `width`                     | 25                | Largeur de la grille                                                                      |
+| `height`                    | 15                | Hauteur de la grille                                                                      |
+| `cell_size`                 | 30                | Taille d’affichage des cellules (en pixels)                                                                     |
+| `fish_reproduction_time`    | 9                 | Nombre de chronons avant reproduction d’un poisson                                                                     |
+| `shark_reproduction_time`   | 3                 | Nombre de chronons avant reproduction d’un requin                                                                      |
+| `shark_energy`              | 7                 | Énergie initiale d’un requin ; diminue chaque chronon, remonte en mangeant                                         |
 
-Ces paramètres peuvent être modifiés directement dans le fichier source (`simulation_wator_tkinter.py`) pour tester différents comportements écologiques.
+Ces paramètres peuvent être modifiés directement dans le fichier source (`ocean_toroïdal.py`) pour tester différents comportements écologiques.
 
 ---
 
@@ -53,10 +53,14 @@ Ces paramètres peuvent être modifiés directement dans le fichier source (`sim
 
 | Nom                   | Rôle                             | Contributions principales                                                |
 |-----------------------|----------------------------------|-----------------------------------------------------------|
-| Amina ABDEDDAÏM       | Définition de la grille          | Implémentation de la logique de simulation (Fish, Shark)|
-| Amina ABDEDDAÏM       | Interface utilisateur            | Développement de l’interface Tkinter (affichage, bouton)      |
-| Sophie Martin          | Tests et validation             | Tests du comportement, réglages des paramètres  |
-| Karim Ouali            | Documentation & README          | Rédaction de la documentation, explication du modèle    |
+| Amina                 | Définition de la grille          | Implémentation de la logique de simulation (Fish, Shark)|
+| Amina                 | Interface utilisateur            | Développement de l’interface Tkinter (affichage, bouton)                                |
+| Ryad                  | Comportement des requins         | Réglages des paramètres (Mouvements,alimentation, reproduction et interactions.)   |
+| Bafode                | Comportements des poissons       | Réglages des paramétres (Mouvements, reproduction, interactions. ) |
+| Amina                 | Documentation & README           | Rédaction de la documentation et explication du modéle   | 
+| Bafode & Ryad         |          | Rédaction de la documentation et explication du modéle   | 
+
+
 
 ---
 
