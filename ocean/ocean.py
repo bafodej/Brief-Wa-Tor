@@ -2,7 +2,6 @@ import random
 
 
 
-
 from models.fishes import Fish
 from models.utils.config import (
     GRID_WIDTH, GRID_HEIGHT, 
