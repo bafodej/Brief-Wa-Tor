@@ -1,50 +1,49 @@
-from utils.config import *
-from models.sharks import *
-from ocean.ocean import *
+# Constants (déplacées depuis config.py)
+CRONON = 12
+FISH_REPRODUCTION_TIME = CRONON * 2
 
 class Fish:
-    def __init__(self, x, y, age=0):
+    def __init__(self, x=0, y=0, age=0):
         self.x = x
         self.y = y
         self.age = age
         self.fish_reproduction_time = 0
-        self.do_movement = False                                   # Pour éviter de déplacer deux fois le même poisson
+        self.do_movement = False  # Pour éviter de déplacer deux fois le même organisme
     
-    def age(self):
+    def age_up(self):
         self.age += 1
         self.fish_reproduction_time += 1
     
     def can_reproduced(self):
-        return self.fish_reproduction_time >= REPRODUCTION_TIME_FISH
+        """Vérifie si le poisson peut se reproduire"""
+        return self.fish_reproduction_time >= FISH_REPRODUCTION_TIME
     
-    def to_reproduced(self):                                        # La création du nouveau poisson sera gérée par la planète/océan
+    def to_reproduced(self):
         self.fish_reproduction_time = 0
-       
     
-    def to_moov(self, ocean):
+    def to_move(self, ocean):
         if self.do_movement:
             return False
-            
         
-        neighbour_empty = ocean.empty_box_neighbour(self.x, self.y)  # Chercher les cases vides 
+        neighbour_empty = ocean.empty_box_neighbour(self.x, self.y)
         
-        if not neighbour_empty:                                      # Pas de déplacement possible
-            return False  
+        if not neighbour_empty:
+            return False
         
+        new_x, new_y = ocean.random_choice(neighbour_empty)
         
-        new_x, new_y = ocean.random_choice(neighbour_empty)           # Sélectionner une case vide au hasard
+        have_to_reproduced = self.can_reproduced()
         
-        
-        have_to_reproduced = self.can_reproduced()                    # Vérifier si reproduction possible
-        
-        
-        ocean.moov_fish(self.x, self.y, new_x, new_y)                 # Déplacer le poisson
+        ocean.moov_fish(self.x, self.y, new_x, new_y)
         self.x, self.y = new_x, new_y
         
-        
-        if have_to_reproduced:                                         # Reproduire si nécessaire
+        if have_to_reproduced:
             self.to_reproduced()
-            ocean.add_fishes(self.x, self.y)
+            ocean.add_fish(self.x, self.y, self.__class__)
             
         self.do_movement = True
         return True
+
+class Sardine(Fish):
+    def __init__(self, x=0, y=0, age=0):
+        super().__init__(x, y, age)
