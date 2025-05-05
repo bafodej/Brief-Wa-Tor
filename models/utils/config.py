@@ -17,12 +17,12 @@ SHARK_STARVATION_TIME = 6
 SHARK_ENERGY_GAIN = 2
 
 # Configuration de la grille
-GRID_WIDTH = 50
-GRID_HEIGHT = 50
+GRID_WIDTH = 25
+GRID_HEIGHT = 25
 
 # Paramètres pour l'interface Tkinter
-WINDOW_WIDTH = 900
-WINDOW_HEIGHT = 650
+WINDOW_WIDTH = 90
+WINDOW_HEIGHT = 65
 CANVAS_WIDTH = 600
 CANVAS_HEIGHT = 600
 SIMULATION_SPEED = 200  # ms entre les étapes (plus petit = plus rapide)
