@@ -1,4 +1,9 @@
 from models.fishes import Fish
+from models.fishes import Fish
+from models.utils.config import (
+    SHARK_ENERGY_GAIN, SHARK_STARVATION_TIME, SHARK_REPRODUCTION_TIME
+)
+
 
 class Shark(Fish):
     def __init__(self, x=0, y=0, age=0, shark_energy=3, shark_starvation_time=1, shark_reproduction_time=3):
@@ -20,7 +25,7 @@ class Shark(Fish):
             fish_x, fish_y = ocean.random_choice(neighbor_fish)
             ocean.eat_fish(self.x, self.y, fish_x, fish_y)
             self.x, self.y = fish_x, fish_y
-            self.shark_energy +=   # Gain d'énergie en mangeant
+            self.shark_energy += SHARK_ENERGY_GAIN  # Gain d'énergie en mangeant
             
             # Vérifier si reproduction possible
             if self.shark_reproduction_time >= self.shark_reproduction_time:
