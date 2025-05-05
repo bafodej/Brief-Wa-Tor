@@ -1,5 +1,11 @@
 import tkinter as tk
-from Ocean.ocean import initialize_ocean, update_ocean, toroidal, get_neighbors, width, height, cell_size, Fish, Shark, Ocean
+from ocean.ocean import *
+from models.fishes import *
+from models.sharks import *
+from typing import Optional, List, Tuple, Union  # Définition des types de valeur pour la simulation, Optinal (str) pour les entités vides, List [int] pour les listes, Tuple [str,int] pour les coordonnées x et y, Union [int,str] pour les entités (poisson ou requin).
+
+
+
 
 # --- Interface graphique Tkinter ---
 class WaTorApp:

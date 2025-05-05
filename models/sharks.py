@@ -1,0 +1,22 @@
+from utils.config import *
+from models.fishes import *
+from ocean.ocean import *
+
+class Shark(Fish):
+    def __init__(self, shark_energy, shark_starvation_time, shark_reproduction_time):
+        super().__init__()  # si Poisson a des attributs à initier
+        self.shark_energy = shark_energy
+        self.shark_starvation_time = shark_starvation_time
+        self.shark_reproduction_time = shark_reproduction_time
+        self.age = 0  # utile pour reproduction
+
+
+def move_shark(self, position, ocean):
+    self.age += 1
+    self.shark_energy -= 1
+    self.shark_reproduction_time += 1
+
+
+
+
+
