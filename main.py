@@ -42,8 +42,6 @@ def main():
     print(f"Sardines: {sardine_stats[-1]}")
     print(f"Requins: {shark_stats[-1]}")
     
-    # On pourrait ajouter ici du code pour tracer un graphique
-    # de l'évolution des populations avec matplotlib
 
 if __name__ == "__main__":
     main()

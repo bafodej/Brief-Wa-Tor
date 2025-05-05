@@ -33,7 +33,7 @@ class WaTorApp:
         
         # Initialisation de l'océan
         self.ocean = Ocean(GRID_WIDTH, GRID_HEIGHT)
-        self.sardine_count, self.shark_count = self.ocean.count_fish()  # Corrigé ici
+        self.sardine_count, self.shark_count = self.ocean.count_fish()  # 
         
         # Création de l'interface
         self.create_widgets()

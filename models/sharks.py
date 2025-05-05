@@ -20,7 +20,7 @@ class Shark(Fish):
             fish_x, fish_y = ocean.random_choice(neighbor_fish)
             ocean.eat_fish(self.x, self.y, fish_x, fish_y)
             self.x, self.y = fish_x, fish_y
-            self.shark_energy += 2  # Gain d'énergie en mangeant
+            self.shark_energy +=   # Gain d'énergie en mangeant
             
             # Vérifier si reproduction possible
             if self.shark_reproduction_time >= self.shark_reproduction_time:
