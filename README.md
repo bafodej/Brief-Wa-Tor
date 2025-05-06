@@ -23,7 +23,7 @@ Simulation inspirée du monde de **Wa-Tor**, une planète peuplée de **poissons
    - Ouvrir un terminal et exécuter :
 
      ```bash
-     python simulation_wator_tkinter.py
+     python3 main.py
      ```
 
 3. **Interface** :
