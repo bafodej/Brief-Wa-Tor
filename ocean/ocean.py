@@ -1,155 +1,144 @@
 import random
-from models.fishes import Fish
+from typing import List, Tuple, Optional, Union, Type
+
+# Type pour la grille océanique
+Grid = List[List[Optional[Union['Fish', 'Sardine', 'Shark', None]]]]
+
+# Importation des classes et constantes
+from models.fishes import Fish, Sardine
+from models.sharks import Shark
 from models.utils.config import (
     GRID_WIDTH, GRID_HEIGHT, 
     INITIAL_SARDINE_PROBABILITY, INITIAL_SHARK_PROBABILITY,
-    SARDINE_REPRODUCTION_TIME, SHARK_REPRODUCTION_TIME,
-    SHARK_INITIAL_ENERGY, SHARK_STARVATION_TIME
+    FISH_REPRODUCTION_TIME, SHARK_REPRODUCTION_TIME,
+    SHARK_INITIAL_ENERGY, SHARK_STARVATION_TIME,
+    SHARK_ENERGY_GAIN
 )
 
-class Ocean:
-    def __init__(self, width=GRID_WIDTH, height=GRID_HEIGHT):
-        self.width = width
-        self.height = height
-        self.grid = [[None for _ in range(width)] for _ in range(height)]
-        self.cronon = 0  # Compteur de pas de simulation
-        self.initialize_grid()
-    
-    def initialize_grid(self):
-        # Import ici pour éviter les importations circulaires
-        from models.fishes import Sardine
-        from models.sharks import Shark
-        
-        # Initialiser les compteurs ici
-        shark_count = 0
-        sardine_count = 0
-        
-        for x in range(self.width):
-            for y in range(self.height):
-                r = random.random()
+# Pour compatibilité avec main_tkinter
+width = GRID_WIDTH
+height = GRID_HEIGHT
+
+# --- Création d'une grille vide (océan) ---
+Ocean: Grid = [[None for _ in range(width)] for _ in range(height)]
+
+def initialize_ocean() -> None:
+    """
+    Remplit l'océan aléatoirement :
+    - 90 % de sardines,
+    - 5 % de requins,
+    - 5 % d'eau.
+    """
+    for y in range(height):
+        for x in range(width):
+            r = random.random()
+            if r < INITIAL_SARDINE_PROBABILITY:
+                Ocean[y][x] = Sardine(x, y)
+            elif r < INITIAL_SARDINE_PROBABILITY + INITIAL_SHARK_PROBABILITY:
+                Ocean[y][x] = Shark(x, y)
+            else:
+                Ocean[y][x] = None
+
+def toroidal(x: int, y: int) -> Tuple[int, int]:
+    """
+    Gère les bords de la grille en mode torique :
+    Si on sort à droite, on revient à gauche, etc.
+    """
+    return x % width, y % height
+
+def get_neighbors(x: int, y: int) -> List[Tuple[int, int]]:
+    """
+    Retourne les coordonnées des 4 cellules voisines immédiates (haut, bas, gauche, droite).
+    L'ordre est aléatoire pour éviter des biais de direction.
+    """
+    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    neighbors = [toroidal(x + dx, y + dy) for dx, dy in directions]
+    random.shuffle(neighbors)
+    return neighbors
+
+def update_ocean() -> None:
+    """
+    Met à jour la grille :
+    - Les sardines se déplacent et se reproduisent s'ils ont l'âge requis.
+    - Les requins mangent les sardines, se déplacent, se reproduisent, ou meurent s'ils n'ont plus d'énergie.
+    """
+    global Ocean
+    new_ocean: Grid = [[None for _ in range(width)] for _ in range(height)]
+    has_moved = [[False for _ in range(width)] for _ in range(height)]
+
+    # Mettre à jour les requins d'abord (ils ont la priorité)
+    for y in range(height):
+        for x in range(width):
+            entity = Ocean[y][x]
+            if entity is None or has_moved[y][x]:
+                continue
+
+            if isinstance(entity, Shark):
+                entity.age_up()
+                entity.shark_energy -= 1
+                moved = False
                 
-                if r < INITIAL_SARDINE_PROBABILITY:
-                    self.grid[y][x] = Sardine(x, y)
-                    sardine_count += 1
-                elif r < INITIAL_SARDINE_PROBABILITY + INITIAL_SHARK_PROBABILITY:
-                    self.grid[y][x] = Shark(
-                        x, y, 
-                        shark_energy=SHARK_INITIAL_ENERGY,
-                        shark_starvation_time=SHARK_STARVATION_TIME,
-                        shark_reproduction_time=SHARK_REPRODUCTION_TIME
-                    )
-                    shark_count += 1
-        
-        print(f"Initialisation: {sardine_count} sardines, {shark_count} requins")
-    
-    def toroidal(self, x, y):
-        """Implémente le toroïde pour que les bords de la grille se rejoignent"""
-        return x % self.width, y % self.height
-    
-    def get_neighbors(self, x, y):
-        """Obtient les coordonnées des cases voisines"""
-        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-        neighbors = []
-        
-        for dx, dy in directions:
-            nx, ny = self.toroidal(x + dx, y + dy)
-            neighbors.append((nx, ny))
-            
-        return neighbors
-    
-    def empty_box_neighbour(self, x, y):
-        """Trouve les cases voisines vides"""
-        neighbors = self.get_neighbors(x, y)
-        return [(nx, ny) for nx, ny in neighbors if self.grid[ny][nx] is None]
-    
-    def fish_neighbour(self, x, y):
-        """Trouve les sardines voisines pour les requins"""
-        from models.fishes import Sardine
-        
-        neighbors = self.get_neighbors(x, y)
-        return [(nx, ny) for nx, ny in neighbors 
-               if isinstance(self.grid[ny][nx], Sardine)]
-    
-    def random_choice(self, options):
-        """Choix aléatoire parmi les options disponibles"""
-        if not options:  # Protection contre liste vide
-            return None, None
-        return random.choice(options)
-    
-    def moov_fish(self, old_x, old_y, new_x, new_y):
-        """Déplace un poisson d'une case à une autre"""
-        self.grid[new_y][new_x] = self.grid[old_y][old_x]
-        self.grid[old_y][old_x] = None
-    
-    def eat_fish(self, shark_x, shark_y, fish_x, fish_y):
-        """Requin mange un poisson"""
-        self.grid[fish_y][fish_x] = self.grid[shark_y][shark_x]
-        self.grid[shark_y][shark_x] = None
-    
-    def add_fish(self, x, y, fish_class):
-        """Ajoute un nouveau poisson (reproduction)"""
-        # Trouver une case vide à proximité
-        empty_neighbors = self.empty_box_neighbour(x, y)
-        if empty_neighbors:
-            nx, ny = self.random_choice(empty_neighbors)
-            if nx is not None and ny is not None:
-                # Créer une nouvelle instance de la classe de poisson appropriée
-                self.grid[ny][nx] = fish_class(nx, ny)
-    
-    def remove_fish(self, x, y):
-        """Supprime un poisson (mort)"""
-        self.grid[y][x] = None
-    
-    def count_fish(self):
-        """Compte le nombre de sardines et de requins"""
-        from models.fishes import Sardine
-        from models.sharks import Shark
-        
-        sardine_count = 0
-        shark_count = 0
-        
-        for y in range(self.height):
-            for x in range(self.width):
-                fish = self.grid[y][x]
-                if isinstance(fish, Sardine):
-                    sardine_count += 1
-                elif isinstance(fish, Shark):
-                    shark_count += 1
-        
-        return sardine_count, shark_count
-    
-    def run_simulation_step(self):
-        """Exécute une étape de la simulation"""
-        from models.sharks import Shark
-        from models.fishes import Sardine
-        
-        self.cronon += 1
-        
-        # Comptage avant mouvement pour débogage
-        sardine_count, shark_count = self.count_fish()
-        print(f"Début du chronon {self.cronon} - Sardines: {sardine_count}, Requins: {shark_count}")
-        
-        # Réinitialiser le flag do_movement et faire vieillir tous les poissons
-        for y in range(self.height):
-            for x in range(self.width):
-                fish = self.grid[y][x]
-                if isinstance(fish, Fish):  # Fish est la classe parente de Sardine et Shark
-                    fish.do_movement = False
-                    fish.age_up()
-        
-        # Déplacer tous les poissons
-        for y in range(self.height):
-            for x in range(self.width):
-                fish = self.grid[y][x]
+                # Le requin cherche des sardines à manger
+                for nx, ny in get_neighbors(x, y):
+                    if entity.can_eat(Ocean[ny][nx]) and new_ocean[ny][nx] is None:
+                        # Le requin mange une sardine et regagne de l'énergie
+                        entity.shark_energy += SHARK_ENERGY_GAIN
+                        
+                        # Vérifier si reproduction possible
+                        if entity.shark_reproduction_counter >= SHARK_REPRODUCTION_TIME:
+                            new_ocean[y][x] = Shark(x, y)
+                            entity.shark_reproduction_counter = 0
+                        
+                        # Déplacer le requin à la position de la sardine
+                        new_ocean[ny][nx] = entity
+                        has_moved[ny][nx] = True
+                        moved = True
+                        break
                 
-                if fish is None or fish.do_movement:
-                    continue
+                if not moved:
+                    # Sinon, il se déplace dans une case vide
+                    for nx, ny in get_neighbors(x, y):
+                        if Ocean[ny][nx] is None and new_ocean[ny][nx] is None:
+                            # Vérifier si reproduction possible
+                            if entity.shark_reproduction_counter >= SHARK_REPRODUCTION_TIME:
+                                new_ocean[y][x] = Shark(x, y)
+                                entity.shark_reproduction_counter = 0
+                            
+                            # Déplacer le requin
+                            new_ocean[ny][nx] = entity
+                            has_moved[ny][nx] = True
+                            moved = True
+                            break
                 
-                if isinstance(fish, Shark):
-                    fish.move_shark(self)
-                    fish.check_survival(self)
-                elif isinstance(fish, Sardine):
-                    fish.to_move(self)
-        
-        # Retourne les statistiques de l'étape
-        return self.count_fish()
+                # Si aucune action n'est possible, il reste sur place s'il est encore en vie
+                if not moved and entity.shark_energy > 0:
+                    new_ocean[y][x] = entity
+
+    # Ensuite mettre à jour les sardines
+    for y in range(height):
+        for x in range(width):
+            entity = Ocean[y][x]
+            if entity is None or has_moved[y][x]:
+                continue
+
+            if isinstance(entity, Sardine):
+                entity.age_up()
+                moved = False
+                
+                for nx, ny in get_neighbors(x, y):
+                    if Ocean[ny][nx] is None and new_ocean[ny][nx] is None:
+                        # Vérifier si reproduction possible
+                        if entity.reproduction_counter >= FISH_REPRODUCTION_TIME:
+                            new_ocean[y][x] = Sardine(x, y)
+                            entity.reproduction_counter = 0
+                        
+                        # Déplacer la sardine
+                        new_ocean[ny][nx] = entity
+                        has_moved[ny][nx] = True
+                        moved = True
+                        break
+                
+                if not moved:
+                    new_ocean[y][x] = entity
+
+    Ocean = new_ocean

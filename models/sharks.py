@@ -1,52 +1,80 @@
+import random
+from typing import List, Tuple, Optional
 from models.fishes import Fish
 from models.utils.config import (
-    SHARK_ENERGY_GAIN, SHARK_STARVATION_TIME, SHARK_REPRODUCTION_TIME
+    SHARK_ENERGY_GAIN, 
+    SHARK_STARVATION_TIME, 
+    SHARK_REPRODUCTION_TIME,
+    SHARK_INITIAL_ENERGY
 )
 
 class Shark(Fish):
-    def __init__(self, x=0, y=0, age=0, shark_energy=6, shark_starvation_time=6, shark_reproduction_time=12):
+    """Classe représentant un requin dans la simulation Wa-Tor."""
+    def __init__(self, x=0, y=0, age=0, energy=SHARK_INITIAL_ENERGY):
         super().__init__(x, y, age)
-        self.shark_energy = shark_energy
-        self.shark_starvation_time = shark_starvation_time
-        self.shark_reproduction_threshold = shark_reproduction_time
-        self.shark_reproduction_counter = 0
+        self.energy = energy
     
-    def age_up(self):
-        super().age_up()
-        self.shark_reproduction_counter += 1
-    
-    def move_shark(self, ocean):
-        if self.do_movement:
-            return False
+    def update(self) -> None:
+        """Met à jour l'état du requin pour un chronon."""
+        if self.moved:  # Si déjà déplacé dans ce chronon
+            self.moved = False
+            return
         
-        # Vérifie s'il y a des sardines à proximité pour manger
-        neighbor_sardines = ocean.sardine_neighbour(self.x, self.y)
+        from models.ocean import Ocean  # Import ici pour éviter l'import circulaire
         
-        if neighbor_sardines:
-            # Manger une sardine et gagner de l'énergie
-            sardine_x, sardine_y = ocean.random_choice(neighbor_sardines)
-            if sardine_x is not None and sardine_y is not None:
-                ocean.eat_sardine(self.x, self.y, sardine_x, sardine_y)
-                self.x, self.y = sardine_x, sardine_y
-                self.shark_energy += SHARK_ENERGY_GAIN
+        # Recherche des cellules avec des poissons adjacents
+        fish_cells = []
+        for nx, ny in Ocean.get_adjacent_positions(self.x, self.y):
+            entity = Ocean.get_cell(nx, ny)
+            if isinstance(entity, Fish) and not isinstance(entity, Shark):
+                fish_cells.append((nx, ny))
+        
+        # Diminution de l'énergie à chaque tour
+        self.energy -= 1
+        
+        if self.energy <= 0:  # Mort par manque d'énergie
+            Ocean.set_cell(self.x, self.y, None)
+            return
+        
+        if fish_cells:  # Chasse aux poissons si disponibles
+            new_x, new_y = random.choice(fish_cells)
+            self.energy = SHARK_STARVATION_TIME  # Regain d'énergie après avoir mangé
+            
+            # Reproduction si assez de temps écoulé
+            if self.breed_counter >= SHARK_REPRODUCTION_TIME:
+                self.breed_counter = 0
+                # Place un nouveau requin à l'ancienne position
+                Ocean.set_cell(self.x, self.y, Shark(self.x, self.y))
+            else:
+                # Sinon, juste déplacer le requin
+                Ocean.set_cell(self.x, self.y, None)
+            
+            # Mise à jour position et manger le poisson
+            self.x, self.y = new_x, new_y
+            Ocean.set_cell(self.x, self.y, self)
+            self.breed_counter += 1
+            self.moved = True
+        else:
+            # Recherche des cellules vides adjacentes si pas de poisson à manger
+            empty_cells = []
+            for nx, ny in Ocean.get_adjacent_positions(self.x, self.y):
+                if Ocean.get_cell(nx, ny) is None:
+                    empty_cells.append((nx, ny))
+            
+            if empty_cells:  # S'il y a des cellules vides
+                new_x, new_y = random.choice(empty_cells)
                 
-                # Vérifier si reproduction possible
-                if self.shark_reproduction_counter >= self.shark_reproduction_threshold:
-                    ocean.add_shark(self.x, self.y)
-                    self.shark_reproduction_counter = 0
+                # Reproduction si assez de temps écoulé
+                if self.breed_counter >= SHARK_REPRODUCTION_TIME:
+                    self.breed_counter = 0
+                    # Place un nouveau requin à l'ancienne position
+                    Ocean.set_cell(self.x, self.y, Shark(self.x, self.y))
+                else:
+                    # Sinon, juste déplacer le requin
+                    Ocean.set_cell(self.x, self.y, None)
                 
-                self.do_movement = True
-                return True
-        
-        # Réduire l'énergie seulement après avoir vérifié si on peut manger
-        self.shark_energy -= 1
-        
-        # Si pas de sardine à proximité, déplacement normal
-        return super().to_moov(ocean)
-    
-    def check_survival(self, ocean):
-        # Si le requin n'a plus d'énergie, il meurt
-        if self.shark_energy <= 0:
-            ocean.remove_sardine(self.x, self.y)
-            return False
-        return True
+                # Mise à jour position
+                self.x, self.y = new_x, new_y
+                Ocean.set_cell(self.x, self.y, self)
+                self.breed_counter += 1
+                self.moved = True
