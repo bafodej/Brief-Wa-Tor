@@ -131,6 +131,8 @@ class WaTorApp:
     def update_display(self):
         # Effacer le canvas
         self.canvas.delete("all")
+
+        self.canvas.create_rectangle(0, 0, self.canvas.winfo_width(), self.canvas.winfo_height(), fill=self.water_color, outline="")
         
         # Calculer la taille des cellules en fonction de la taille du canvas
         canvas_width = self.canvas.winfo_width() or self.canvas_width
@@ -143,28 +145,25 @@ class WaTorApp:
         
         if self.cell_size < 1:
             self.cell_size = 1  # Taille minimale
-        
-        # Dessiner la grille
+
+           # Emojis pour les organismes
+        sardine_emoji = "🐟"  # Emoji poisson
+        shark_emoji = "🦈"    # Emoji requin
+
+            # Dessiner la grille
         for y in range(self.ocean.height):
             for x in range(self.ocean.width):
                 organism = self.ocean.grid[y][x]
                 
-                # Coordonnées du rectangle
-                x1 = x * self.cell_size
-                y1 = y * self.cell_size
-                x2 = x1 + self.cell_size
-                y2 = y1 + self.cell_size
+                # Coordonnées du centre de la cellule
+                x_center = x * self.cell_size + self.cell_size // 2
+                y_center = y * self.cell_size + self.cell_size // 2
                 
-                # Couleur en fonction du type d'organisme
-                if organism is None:
-                    color = self.water_color
-                elif isinstance(organism, Sardine):
-                    color = self.sardine_color
+                # Ajouter un emoji en fonction du type d'organisme
+                if isinstance(organism, Sardine):
+                    self.canvas.create_text(x_center, y_center, text=sardine_emoji, font=("Arial", self.cell_size // 2))
                 elif isinstance(organism, Shark):
-                    color = self.shark_color
-                
-                # Dessiner le rectangle
-                self.canvas.create_rectangle(x1, y1, x2, y2, fill=color, outline="")
+                    self.canvas.create_text(x_center, y_center, text=shark_emoji, font=("Arial", self.cell_size // 2))
         
         # Mettre à jour les statistiques
         self.cronon_var.set(f"Cronon: {self.cronon}")
@@ -172,12 +171,12 @@ class WaTorApp:
         self.shark_var.set(f"Requins: {self.shark_count}")
     
     def toggle_simulation(self):
-        if self.running:
-            self.running = False
-            self.start_button.config(text="Démarrer")
-        else:
-            self.running = True
-            self.start_button.config(text="Pause")
+            if self.running:
+                self.running = False
+                self.start_button.config(text="Démarrer")
+            else:
+                self.running = True
+                self.start_button.config(text="Pause")
             # Lancer la simulation dans un thread pour ne pas bloquer l'interface
             threading.Thread(target=self.run_simulation, daemon=True).start()
     
