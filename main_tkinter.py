@@ -4,6 +4,7 @@ import time
 import threading
 from ocean.ocean import Ocean
 from models.fishes import Sardine
+from models.fishes import Fish
 from models.sharks import Shark
 from models.utils.config import (
     GRID_WIDTH, GRID_HEIGHT, 
@@ -91,7 +92,7 @@ class WaTorApp:
         ttk.Label(speed_frame, text="Vitesse:").pack(side="left")
         self.speed_scale = ttk.Scale(
             speed_frame, 
-            from_=50, 
+            from_=50,  
             to=500, 
             orient="horizontal", 
             value=self.simulation_speed,
