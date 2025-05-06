@@ -29,6 +29,8 @@ class Shark(Fish):
             
             # Vérifier si reproduction possible
             if self.shark_reproduction_time >= self.shark_reproduction_time:
+                # Ajouter un nouveau requin avec énergie maximale
+                new_shark = Shark(self.x, self.y, shark_energy=SHARK_STARVATION_TIME)
                 ocean.add_fish(self.x, self.y, Shark)
                 self.shark_reproduction_time = 0
                 
