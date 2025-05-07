@@ -14,7 +14,7 @@ SHARK_INITIAL_ENERGY = 5
 SHARK_STARVATION_TIME = 5
 
 # Énergie gagnée par un requin en mangeant une sardine
-SHARK_ENERGY_GAIN = 5
+SHARK_ENERGY_GAIN = 7
 
 # Configuration de la grille
 GRID_WIDTH = 25
@@ -27,8 +27,3 @@ CANVAS_WIDTH = 600
 CANVAS_HEIGHT = 600
 SIMULATION_SPEED = 200  # ms entre les étapes (plus petit = plus rapide)
 
-# Couleurs pour l'interface
-WATER_COLOR = "#0077be"  # Bleu océan
-SARDINE_COLOR = "#00cc00"   # Vert pour les sardines
-SHARK_COLOR = "#cc0000"  # Rouge pour les requins
-TEXT_COLOR = "#000000"  # Noir pour le texte
