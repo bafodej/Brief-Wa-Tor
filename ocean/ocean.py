@@ -86,16 +86,27 @@ class Ocean:
         self.grid[fish_y][fish_x] = self.grid[shark_y][shark_x]
         self.grid[shark_y][shark_x] = None
     
-    def add_fish(self, x, y, fish_class):
+    def add_fish(self, x, y, fish_obj_or_class):
         """Ajoute un nouveau poisson (reproduction)"""
         # Trouver une case vide à proximité
         empty_neighbors = self.empty_box_neighbour(x, y)
         if empty_neighbors:
             nx, ny = self.random_choice(empty_neighbors)
             if nx is not None and ny is not None:
-                # Créer une nouvelle instance de la classe de poisson appropriée
-                self.grid[ny][nx] = fish_class(nx, ny)
-    
+                # Utiliser directement le paramètre sans vérification
+                if hasattr(fish_obj_or_class, '__call__'):  # Si c'est une classe
+                    self.grid[ny][nx] = fish_obj_or_class(nx, ny)
+                else:  # Si c'est une instance
+                    # Importer les classes nécessaires
+                    from models.sharks import Shark
+                    from models.fishes import Fish
+                
+                    # Vérifier le type et créer une nouvelle instance
+                    if isinstance(fish_obj_or_class, Shark):
+                        self.grid[ny][nx] = Shark(nx, ny)
+                    else:
+                        self.grid[ny][nx] = Fish(nx, ny)
+
     def remove_fish(self, x, y):
         """Supprime un poisson (mort)"""
         self.grid[y][x] = None

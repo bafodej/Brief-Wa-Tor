@@ -14,7 +14,7 @@ SHARK_INITIAL_ENERGY = 5
 SHARK_STARVATION_TIME = 5
 
 # Énergie gagnée par un requin en mangeant une sardine
-SHARK_ENERGY_GAIN = 7
+SHARK_ENERGY_GAIN = 5
 
 # Configuration de la grille
 GRID_WIDTH = 25
