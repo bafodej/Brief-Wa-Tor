@@ -1,0 +1,24 @@
+# Fichiers cache Python a ignoré 
+__pycache__/
+*.py[cod]
+*$py.class
+
+
+# Environnements virtuels
+venv/
+env/
+ENV/
+
+# Fichiers de configuration IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Fichiers de logs
+*.log
+
+
+# Fichiers temporaires
+.DS_Store
+Thumbs.db
