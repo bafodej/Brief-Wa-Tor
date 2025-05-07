@@ -107,19 +107,19 @@ class WaTorApp:
         sardine_legend.pack(fill="x", pady=2)
         sardine_color = ttk.Label(sardine_legend, text="    ", background=self.sardine_color)
         sardine_color.pack(side="left")
-        ttk.Label(sardine_legend, text=" Sardine").pack(side="left")
+        ttk.Label(sardine_legend, text=" Sardine 🐟").pack(side="left")
         
         shark_legend = ttk.Frame(legend_frame)
         shark_legend.pack(fill="x", pady=2)
         shark_color = ttk.Label(shark_legend, text="    ", background=self.shark_color)
         shark_color.pack(side="left")
-        ttk.Label(shark_legend, text=" Requin").pack(side="left")
+        ttk.Label(shark_legend, text=" Requin 🦈").pack(side="left")
         
         water_legend = ttk.Frame(legend_frame)
         water_legend.pack(fill="x", pady=2)
         water_color = ttk.Label(water_legend, text="    ", background=self.water_color)
         water_color.pack(side="left")
-        ttk.Label(water_legend, text=" Eau").pack(side="left")
+        ttk.Label(water_legend, text=" Eau 🟦").pack(side="left")
         
         # Configurer les poids de la grille pour le redimensionnement
         self.root.grid_rowconfigure(0, weight=1)
