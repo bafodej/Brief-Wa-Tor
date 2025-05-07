@@ -5,7 +5,7 @@ from ocean.ocean import Ocean
 
 # Imports nécessaires
 import tkinter as tk
-from ui.main_interface import WaTorApp
+from ui.interface import WaTorApp
 
 def main():
     """Fonction principale qui lance l'application Wa-Tor."""
