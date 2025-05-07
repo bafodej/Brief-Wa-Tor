@@ -5,7 +5,8 @@ from models.utils.config import (
 )
 
 
-class Shark(Fish):
+class Shark(Fish): 
+    # Classe représentant un requin, qui peut manger des sardines.
     def __init__(self, x=0, y=0, age=0, shark_energy=3, shark_starvation_time=1, shark_reproduction_time=3):
         super().__init__(x, y, age)
         self.shark_energy = shark_energy
@@ -13,7 +14,8 @@ class Shark(Fish):
         self.shark_reproduction_time = shark_reproduction_time
     
     def move_shark(self, ocean):
-        self.age += 1
+         # Incrémente l'âge, l'énegrie et le compteur de reproduction du requin.
+        self.age += 1 #
         self.shark_energy -= 1
         self.shark_reproduction_time += 1
         
