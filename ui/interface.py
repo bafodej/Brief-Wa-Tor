@@ -17,8 +17,8 @@ class WaTorApp:
         self.root.resizable(True, True)
         
         # Variables de configuration
-        self.canvas_width = 600
-        self.canvas_height = 600
+        self.canvas_width = 25
+        self.canvas_height = 25
         self.cell_size = min(self.canvas_width // GRID_WIDTH, self.canvas_height // GRID_HEIGHT)
         
         # Couleurs
@@ -226,23 +226,3 @@ class WaTorApp:
     def set_speed(self, value):
         self.simulation_speed = float(value)
 
-def main():
-    # Créer la fenêtre principale
-    root = tk.Tk()
-    app = WaTorApp(root)
-    
-    # Configurer la taille initiale
-    root.geometry("900x650")
-    
-    # Configurer le comportement lors du redimensionnement
-    def on_resize(event):
-        if event.widget == root:
-            app.update_display()
-    
-    root.bind("<Configure>", on_resize)
-    
-    # Lancer l'interface
-    root.mainloop()
-
-if __name__ == "__main__":
-    main()

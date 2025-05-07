@@ -21,9 +21,9 @@ GRID_WIDTH = 25
 GRID_HEIGHT = 25
 
 # Paramètres pour l'interface Tkinter
-WINDOW_WIDTH = 90
-WINDOW_HEIGHT = 65
-CANVAS_WIDTH = 600
-CANVAS_HEIGHT = 600
+WINDOW_WIDTH = 25
+WINDOW_HEIGHT = 25
+CANVAS_WIDTH = 25
+CANVAS_HEIGHT = 25
 SIMULATION_SPEED = 200  # ms entre les étapes (plus petit = plus rapide)
 
